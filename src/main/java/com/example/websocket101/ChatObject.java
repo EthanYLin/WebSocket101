@@ -2,21 +2,37 @@ package com.example.websocket101;
 
 public class ChatObject {
 
-    private String userName;
-    private String message;
-    private String roomName;
+    enum Type {
+        PRIVATE, ROOM, BROADCAST
+    }
 
-    public String getRoomName() {
-        return roomName;
+    private String fromUserName;
+    private Type type;
+    private String to;
+    private String message;
+
+    public String getFromUserName() {
+        return fromUserName;
     }
-    public void setRoomName(String roomName) {
-        this.roomName = roomName;
+
+    public void setFromUserName(String fromUserName) {
+        this.fromUserName = fromUserName;
     }
-    public String getUserName() {
-        return userName;
+
+    public Type getType() {
+        return type;
     }
-    public void setUserName(String userName) {
-        this.userName = userName;
+
+    public void setType(Type type) {
+        this.type = type;
+    }
+
+    public String getTo() {
+        return to;
+    }
+
+    public void setTo(String to) {
+        this.to = to;
     }
 
     public String getMessage() {
@@ -30,16 +46,14 @@ public class ChatObject {
     public ChatObject() {
     }
 
-    public ChatObject(String userName, String message, String roomName) {
-        this.userName = userName;
+    public ChatObject(String fromUserName, Type type, String to, String message) {
+        this.fromUserName = fromUserName;
+        this.type = type;
+        this.to = to;
         this.message = message;
-        this.roomName = roomName;
     }
 
-
-    @Override
-    public String toString() {
-        return String.format("ChatObject{userName='%s', message='%s', room='%s'}",
-                userName, message, roomName);
+    public boolean isSomeNull(){
+        return fromUserName == null || type == null || to == null || message == null;
     }
 }
