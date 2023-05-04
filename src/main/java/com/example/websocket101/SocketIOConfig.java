@@ -17,7 +17,7 @@ public class SocketIOConfig {
     @Bean
     public SocketIOServer socketIOServer() {
         Configuration config = new Configuration();
-        config.setHostname(host);
+        //config.setHostname(host);
         config.setPort(port);
 
         SocketIOServer server = new SocketIOServer(config);
