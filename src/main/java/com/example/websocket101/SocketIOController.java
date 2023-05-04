@@ -18,9 +18,10 @@ public class SocketIOController {
     @Autowired
     private SocketIOServer server;
 
-    private void log_client(SocketIOClient client){
+    private void log_client(SocketIOClient client, String msg){
         System.out.println("-------START------");
         System.out.println("Client: " + client.getSessionId());
+        System.out.println("Msg:" + msg);
         System.out.println("Namespace: " + client.getNamespace().getName());
         System.out.println("Rooms: " + String.join(", ", client.getAllRooms()));
         System.out.println("-------END------");
@@ -28,7 +29,7 @@ public class SocketIOController {
 
     @OnConnect
     public void onConnect(SocketIOClient client) {
-        log_client(client);
+        log_client(client, "connected.");
         // System.out.println("Client connected: " + client.getSessionId());
     }
 
@@ -37,10 +38,28 @@ public class SocketIOController {
         System.out.println("Client disconnected: " + client.getSessionId());
     }
 
-    @OnEvent("chat")
-    public void onChat(SocketIOClient client, ChatObject chatObject) {
-        System.out.println("Received chat message: " + chatObject.getMessage());
-        server.getBroadcastOperations().sendEvent("chat", chatObject);
+    @OnEvent("join")
+    public void onJoin(SocketIOClient client, ChatObject chatObject) {
+        client.joinRoom(chatObject.getRoomName());
+        log_client(client, "join " + chatObject.getRoomName());
+    }
+
+    @OnEvent("leave")
+    public void onLeave(SocketIOClient client, ChatObject chatObject) {
+        client.leaveRoom(chatObject.getRoomName());
+        log_client(client, "leave " + chatObject.getRoomName());
+    }
+
+    @OnEvent("roomChat")
+    public void onRoomChat(SocketIOClient client, ChatObject chatObject) {
+        System.out.println("Received from " + chatObject.getRoomName() + " message: " + chatObject.getMessage());
+        server.getRoomOperations(chatObject.getRoomName()).sendEvent("roomChat", chatObject);
+    }
+
+    @OnEvent("broadcast")
+    public void onBroadcast(SocketIOClient client, ChatObject chatObject) {
+        System.out.println("Received broadcast message: " + chatObject.getMessage());
+        server.getBroadcastOperations().sendEvent("broadcast", chatObject);
     }
 
 }

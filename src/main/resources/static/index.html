@@ -11,6 +11,11 @@
     <h1>Web Socket 101</h1>
     <p id="msg">Welcome.<br></p>
     <label for="username">用户名:</label><input id="username" />
-    <button id="send" onclick="sendMessage()">Send</button>
+    <label for="room">房间号:</label><input id="room" />
+    <p>点击下方按钮操作</p>
+    <button id="sendToRoom" onclick="sendMessageToRoom()">Send To Room</button>
+    <button id="sendBroadcast" onclick="sendBroadcast()">Send Broadcast</button>
+    <button id="joinRoom" onclick="joinRoom()">Join Room</button>
+    <button id="leaveRoom" onclick="leaveRoom()">Leave Room</button>
 </body>
 </html>
